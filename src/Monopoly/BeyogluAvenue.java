@@ -10,6 +10,7 @@ package monopoly2;
  */
 import java.util.ArrayList;
 
+//Concrete Products
 public class BeyogluAvenue extends PurchaseAndRentalSquare {
 
     public static final String ANSI_RESET = "\u001B[0m";
