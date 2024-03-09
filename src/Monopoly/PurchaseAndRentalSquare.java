@@ -11,6 +11,7 @@ package monopoly2;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//concrete product
 public abstract class PurchaseAndRentalSquare extends Square {
 
     public static final String ANSI_RESET = "\u001B[0m";
