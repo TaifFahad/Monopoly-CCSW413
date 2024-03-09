@@ -9,6 +9,7 @@ package monopoly2;
  * @author pca
  */import java.util.ArrayList;
 
+//concrete product
 public class ElectricTaxSquare extends Square {
 
     private int amount;
@@ -19,6 +20,9 @@ public class ElectricTaxSquare extends Square {
         this.amount = amount;
         this.rule = rule;
     }
+
+    @Override
+    void takeProperties(ArrayList<Player> player, int order){}
 
     @Override
     void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition) {
