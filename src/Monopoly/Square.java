@@ -28,6 +28,8 @@ enum Type {
     FREE_PARKING
 }
 
+//ILL DO FACTORY PATTERN HERE
+//PRODUCT
 public abstract class Square {
 
     private Type type;
@@ -39,6 +41,9 @@ public abstract class Square {
     private Player homeOrHotelOwner;
     Random random = new Random();
 
+ abstract void takeProperties(ArrayList<Player> player, int order);
+
+    
     abstract void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition);
 
     public Square(Type type, String name, int position) {
