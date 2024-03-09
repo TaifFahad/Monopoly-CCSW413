@@ -10,11 +10,15 @@ package monopoly2;
  */
 import java.util.ArrayList;
 
+//concrete product
 public class RegularSquare extends Square {
 
     public RegularSquare(Type type, String name, int position) {
         super(type, name, position);
     }
+
+    @Override
+    void takeProperties(ArrayList<Player> player, int order){}
 
     @Override
     void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition) {
