@@ -10,6 +10,7 @@ package monopoly2;
  */
 import java.util.ArrayList;
 
+//concrete product
 public class InJailSquare extends Square {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -25,6 +26,9 @@ public class InJailSquare extends Square {
         this.rule = rule;
     }
 
+    @Override
+    void takeProperties(ArrayList<Player> player, int order){}
+    
     @Override
     void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition) {
         if (player.get(order).getMoney() > amount) {
