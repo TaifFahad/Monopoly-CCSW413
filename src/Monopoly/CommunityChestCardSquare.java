@@ -10,6 +10,7 @@ package monopoly2;
  */
 import java.util.ArrayList;
 
+//concrete product
 public class CommunityChestCardSquare extends Square {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -32,6 +33,9 @@ public class CommunityChestCardSquare extends Square {
         super(type, name, position);
     }
 
+    @Override
+    void takeProperties(ArrayList<Player> player, int order){}
+    
     @Override
     void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition) {
 
