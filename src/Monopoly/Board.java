@@ -18,17 +18,20 @@ public class Board {
     private static Login login = new Login();
     private ArrayList<Player> player = new ArrayList<>();
     private ArrayList<Square> square = new ArrayList<>();
+    
+    //FACTORY PATTERN 
+    private ConcreteSquareFactory factory = new ConcreteSquareFactory();
     private static Dice dice = new Dice();
     private int cycle = 0;
     private int inJail;
 
     private Random random = new Random();
 
-     void startGame() {
+    public void startGame() {
 
         login.getLoginInformation(); // Taking initial values from user for squares, players and money
         login.createPlayers(player); // Creation of players with the information received
-        creatingSquares(); // Creation squares with type, name and position
+        createSquares(); // Creation squares with type, name and position FACTORY
 
         playGame(); // Players start the game
 
@@ -60,13 +63,13 @@ public class Board {
                     System.out.println("--> " + player.get(pl).getName() + "'s dice: " + dice1 + " - " + dice2);
 
                     if (player.get(pl).getLocation() == ChanceCardSquare.bagdat) {
-                        new BagdatAvenue().takeProperties(player, pl);
+                        factory.createSquare(Type.GO, ANSI_RED, pls).takeProperties(player, pl);
                     } else if (player.get(pl).getLocation() == ChanceCardSquare.beyoglu) {
-                        new BeyogluAvenue().takeProperties(player, pl);
+                        factory.createSquare(Type.GO, ANSI_RED, pls).takeProperties(player, pl);
                     } else if (player.get(pl).getLocation() == ChanceCardSquare.istiklal) {
-                        new IstiklalAvenue().takeProperties(player, pl);
+                        factory.createSquare(Type.GO, ANSI_RED, pls).takeProperties(player, pl);
                     } else if (player.get(pl).getLocation() == ChanceCardSquare.taksim) {
-                        new TaksimAvenue().takeProperties(player, pl);
+                        factory.createSquare(Type.GO, ANSI_RED, pls).takeProperties(player, pl);
                     }
 
                     player.get(pl).setLocationOfPlayer(dice1 + dice2, login.getNumberOfSquare());
@@ -111,19 +114,20 @@ public class Board {
         }
     }
 
-    public void creatingSquares() {
+    public void createSquares() {
+        
 
-        square.add(new GoSquare(Type.GO, "Go Square", 0));
+        square.add(factory.createSquare(Type.GO, "Go Square", 0));
 
         for (int i = 1; i < login.getNumberOfSquare(); i++) {
-            square.add(new RegularSquare(Type.REGULAR, "RegularSquare Square", i));
+            square.add(factory.createSquare(Type.REGULAR, "RegularSquare Square", i));
         }
 
         int fill = 0;
         while (1 > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR && tmp > (square.size() / 2)) {
-                square.set(tmp, new GoToJailSquare(Type.GO_TO_JAIL, "Go To Jail Square", tmp));
+                square.set(tmp, factory.createSquare(Type.GO_TO_JAIL, "Go To Jail Square", tmp));
                 fill++;
             }
         }
@@ -132,7 +136,7 @@ public class Board {
         while (1 > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR && tmp < (square.size() / 2)) {
-                square.set(tmp, new InJailSquare(Type.IN_JAIL, "In Jail Square", tmp, 50, "You have to enter in jail!"));
+                square.set(tmp, factory.createSquare(Type.IN_JAIL, "In Jail Square", tmp, 50, "You have to enter in jail!"));
                 inJail = tmp;
                 fill++;
             }
@@ -182,7 +186,7 @@ public class Board {
         while (1 > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new RailRoadSquare(Type.RAIL_ROAD, "Rail Road Square", tmp, 200, 100));
+                square.set(tmp, factory.createSquare(Type.RAIL_ROAD, "Rail Road Square", tmp, 200, 100));
                 ChanceCardSquare.railRoad = tmp;
                 fill++;
             }
@@ -192,7 +196,7 @@ public class Board {
         while (1 > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new FreeParking(Type.FREE_PARKING, "Free Parking Square", tmp));
+                square.set(tmp, factory.createSquare(Type.FREE_PARKING, "Free Parking Square", tmp));
                 fill++;
             }
         }
@@ -201,7 +205,7 @@ public class Board {
         while (login.getNumberOfIncomeTax() > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new IncomeTaxSquare(Type.INCOME_TAX, "Income Tax Square", tmp, 100, "You have to pay 100M"));
+                square.set(tmp, factory.createSquare(Type.INCOME_TAX, "Income Tax Square", tmp, 100, "You have to pay 100M"));
                 fill++;
             }
         }
@@ -210,7 +214,7 @@ public class Board {
         while (login.getNumberOfChanceCard() > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new ChanceCardSquare(Type.CHANCE_CARD, "Chance Card Square", tmp));
+                square.set(tmp, factory.createSquare(Type.CHANCE_CARD, "Chance Card Square", tmp));
                 fill++;
             }
         }
@@ -219,7 +223,7 @@ public class Board {
         while (login.getNumberOfCommunityChestCard() > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new CommunityChestCardSquare(Type.COMMUNITY_CHEST_CARD, "Community Chest Card Square", tmp));
+                square.set(tmp, factory.createSquare(Type.COMMUNITY_CHEST_CARD, "Community Chest Card Square", tmp));
                 fill++;
             }
         }
@@ -228,7 +232,7 @@ public class Board {
         while (login.getNumberOfElectricTax() > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new ElectricTaxSquare(Type.ELECTRIC_TAX, "Electric Tax Square", tmp, 150, "You have to pay 150M electric tax on this square!"));
+                square.set(tmp, factory.createSquare(Type.ELECTRIC_TAX, "Electric Tax Square", tmp, 150, "You have to pay 150M electric tax on this square!"));
                 fill++;
             }
         }
@@ -237,13 +241,9 @@ public class Board {
         while (login.getNumberOfWaterTax() > fill) {
             int tmp = random.nextInt(square.size());
             if (square.get(tmp).getType() == Type.REGULAR) {
-                square.set(tmp, new WaterTaxSquare(Type.WATER_TAX, "Water Tax Square", tmp, 150, "You have to pay 150M water tax on this square!"));
+                square.set(tmp, factory.createSquare(Type.WATER_TAX, "Water Tax Square", tmp, 150, "You have to pay 150M water tax on this square!"));
                 fill++;
             }
         }
     }
-
 }
-
-
-
