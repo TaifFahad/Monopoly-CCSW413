@@ -11,6 +11,7 @@ package monopoly2;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//concrete product
 public class RailRoadSquare extends Square {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -26,6 +27,9 @@ public class RailRoadSquare extends Square {
         this.rent = rent;
         this.price = price;
     }
+
+    @Override
+    void takeProperties(ArrayList<Player> player, int order){}
 
     @Override
     void doTask(ArrayList<Player> player, int order, int numberOfSquare, int jailPosition) {
