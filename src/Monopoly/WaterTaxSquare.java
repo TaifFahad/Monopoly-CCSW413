@@ -9,6 +9,7 @@ package monopoly2;
  * @author pca
  */import java.util.ArrayList;
 
+//concrete product
 public class WaterTaxSquare extends Square {
 
     private int amount;
@@ -18,6 +19,9 @@ public class WaterTaxSquare extends Square {
         super(type, name, position);
         this.amount = amount;
         this.rule = rule;
+    }
+     @Override
+    void takeProperties(ArrayList<Player> player, int order) {
     }
 
     @Override
