@@ -18,7 +18,19 @@ public class Board {
     private static Login login = new Login();
     private ArrayList<Player> player = new ArrayList<>();
     private ArrayList<Square> square = new ArrayList<>();
-    
+    //singleton
+    //object instance
+    private static Board Instance;
+    //private constructor
+    private Board() {}
+    //public static method 
+    public static createInstance() {
+    	if (Instance == null) {
+    		Instance = new Board();
+    	}
+    	return Instance;
+    }
+
     //FACTORY PATTERN 
     private ConcreteSquareFactory factory = new ConcreteSquareFactory();
     private static Dice dice = new Dice();
