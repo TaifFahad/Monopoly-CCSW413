@@ -10,7 +10,7 @@ package monopoly2;
  */
 public class MonopolyGame {
     public static void main(String[] args) {
-         Board newGame = Board.createInstance();
+        Board newGame = Board.createInstance();
     	newGame.startGame();
     }
 }

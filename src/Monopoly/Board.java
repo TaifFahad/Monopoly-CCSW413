@@ -23,7 +23,7 @@ public class Board {
     private static Board Instance;
     //private constructor
     private Board() {}
-    //public static method 
+    //public static method to create an instance  
     public static Board createInstance() {
     	if (Instance == null) {
     		Instance = new Board();
