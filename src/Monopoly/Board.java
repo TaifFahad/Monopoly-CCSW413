@@ -18,13 +18,13 @@ public class Board {
     private static Login login = new Login();
     private ArrayList<Player> player = new ArrayList<>();
     private ArrayList<Square> square = new ArrayList<>();
-    //singleton
+   //singleton
     //object instance
     private static Board Instance;
     //private constructor
     private Board() {}
     //public static method 
-    public static createInstance() {
+    public static Board createInstance() {
     	if (Instance == null) {
     		Instance = new Board();
     	}
