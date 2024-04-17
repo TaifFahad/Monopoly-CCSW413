@@ -32,7 +32,7 @@ public class Board {
     }
 
     //FACTORY PATTERN 
-    private ConcreteSquareFactory factory = new ConcreteSquareFactory();
+    private SquareFactory factory = new ConcreteSquareFactory();
     private static Dice dice = new Dice();
     private int cycle = 0;
     private int inJail;
