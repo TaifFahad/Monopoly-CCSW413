@@ -8,10 +8,8 @@ package monopoly2;
  *
  * @author pca
  */
-public class MonopolyGame {
-    public static void main(String[] args) {
-        Board newGame = Board.createInstance();
-    	newGame.startGame();
-    }
+//IMPLEMENTING THE PROXY PATTERN
+//Interface defining the operations for the Monopoly game
+interface MonopolyGame {
+    void startGame();
 }
-
