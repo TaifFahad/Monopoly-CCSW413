@@ -8,6 +8,16 @@ package monopoly2;
  *
  * @author pca
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Monopoly;
+
+/**
+ *
+ * @author pca
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -30,7 +40,7 @@ public class Login {
         for (int i = 0; i < numberOfPlayer; i++) {
             System.out.print(i + 1 + ". Player's Name: ");
             String name = scanner.nextLine();
-            player.add(new Player(i, name, 0, getStartingMoney(), false));
+            player.add(new ConcretePlayer(i, name, 0, getStartingMoney(), false));
         }
     }
 
@@ -175,4 +185,38 @@ public class Login {
     public int getStartingMoney() {
         return startingMoney;
     }
+    public void chosenColor(){
+        
+     Scanner scanner = new Scanner(System.in);
+        
+        // Prompt the user to choose the color of the player piece
+        System.out.println("Choose the color of your player piece:");
+        System.out.println("1. Grey");
+        System.out.println("2. Gold");
+        System.out.print("Enter your choice (1 or 2): ");
+        
+        int choice = scanner.nextInt();
+        
+        // Create a ConcretePlayer object
+        Player player = new ConcretePlayer(1, "Player 1", 0, 100, false);
+        
+        // Decorate the player object based on the user's choice
+        switch (choice) {
+            case 1:
+                player = new GreyPiece(player);
+                break;
+            case 2:
+                player = new GoldPiece(player);
+                break;
+            default:
+                System.out.println("Invalid choice! Defaulting to Grey piece.");
+                player = new GreyPiece(player);
+                break;
+        }
+        
+        // Display the chosen player piece color
+        System.out.println(player.getColor());
+    }
+
 }
+
