@@ -31,8 +31,26 @@ interface Player {
     int getMoney();
     boolean isInJail();
     public String getColor();
+    
 }
-
+//state interface
+interface PlayerState {
+    void displayState();
+}
+//state 1, if the player was not in jail
+class FreeState implements PlayerState {
+    @Override
+    public void displayState() {
+        System.out.println(ConcretePlayer.ANSI_BLUE + "<<<  Whuu! FREEDOM :)  >>>\n" + ConcretePlayer.ANSI_RESET);
+    }
+}
+//state 2, if the player was in jail
+class JailState implements PlayerState {
+    @Override
+    public void displayState() {
+        System.out.println(ConcretePlayer.ANSI_RED + "<<<  Opps! IN JAIL :(  >>>\n" + ConcretePlayer.ANSI_RESET);
+    }
+}
 class ConcretePlayer implements Player {   
     
 
@@ -40,14 +58,17 @@ class ConcretePlayer implements Player {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
-
+    //state variable
+    private PlayerState state;
+    
     private int id;
     private String name;
     private int location;
     private int money;
     private boolean isInJail;
     private String color;
-
+    
+       
     public ConcretePlayer(int id, String name, int location, int money, boolean isInJail) {
         this.id = id;
         this.name = name;
@@ -71,15 +92,17 @@ class ConcretePlayer implements Player {
     public void goInJail(int location) {
         this.location = location;
     }
-
+// here we use state method
     public void setIsInJail(boolean inJail) {
-        isInJail = inJail;
-        if (inJail) {
-            System.out.println(ANSI_RED + "<<<  Opps! IN JAIL :(  >>>\n" + ANSI_RESET);
-        } else {
-            System.out.println(ANSI_BLUE + "<<<  Whuu! FREEDOM :)  >>>\n" + ANSI_RESET);
-        }
-    }
+    	 isInJail = inJail;
+         if (inJail) {
+             state = new JailState();
+         } else {
+             state = new FreeState();
+         }
+         state.displayState();
+     }
+   
 
     public void setLocationOfPlayer(int totalDiceValue, int numberOfSquare) {
         // When the player reaches the end of the board, s/he returns to the beginning square.
@@ -155,7 +178,8 @@ abstract class PlayerDecorator implements Player {
     @Override
     public void setLocationOfPlayer(int newLocation) {
        coloredPiece.setLocationOfPlayer(newLocation);    }
-
+    
+   
     @Override
     public String getName() {
     return coloredPiece.getName();
