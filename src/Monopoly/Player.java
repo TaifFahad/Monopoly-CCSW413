@@ -4,20 +4,10 @@
  */
 package monopoly2;
 
-/**
- *
- * @author pca
- */
-    /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-/**
- *
- * @author pca
- * 
- */
+import java.util.ArrayList;
+import java.util.List;
+
 
 interface Player {
     void decreaseMoney(int amount);
@@ -31,8 +21,8 @@ interface Player {
     int getMoney();
     boolean isInJail();
     public String getColor();
-    
 }
+    
 //state interface
 interface PlayerState {
     void displayState();
@@ -51,9 +41,8 @@ class JailState implements PlayerState {
         System.out.println(ConcretePlayer.ANSI_RED + "<<<  Opps! IN JAIL :(  >>>\n" + ConcretePlayer.ANSI_RESET);
     }
 }
-class ConcretePlayer implements Player {   
-    
-
+//Implemnting the observer class 
+class ConcretePlayer implements Observer, Player{  
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -68,7 +57,6 @@ class ConcretePlayer implements Player {
     private boolean isInJail;
     private String color;
     
-       
     public ConcretePlayer(int id, String name, int location, int money, boolean isInJail) {
         this.id = id;
         this.name = name;
@@ -77,7 +65,13 @@ class ConcretePlayer implements Player {
         this.isInJail = isInJail;
         
     }
-
+    
+//overriding the observer method
+       @Override
+    public void updateDiceRoll(int diceValue) {
+    System.out.println("Player " + this.getName() + " rolled the dice. Value: " + diceValue);
+    }
+    
     public void decreaseMoney(int amount) {
         this.money -= amount;
         if (this.money < 0) {
@@ -139,6 +133,8 @@ class ConcretePlayer implements Player {
     public String getColor() {
         return "defult color:grey";
     }
+
+   
    
 }
 
