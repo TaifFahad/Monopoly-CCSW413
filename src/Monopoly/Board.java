@@ -7,13 +7,8 @@ package monopoly2;
 /**
  *
  * @author pca
- */import java.util.ArrayList;
-import java.util.Random;
-
-/**
- *
- * @author pca
- */import java.util.ArrayList;
+ */
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -21,7 +16,7 @@ public class Board {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
 
-    private static Login login = new Login();
+    private static Settings login = new Settings();
     private ArrayList<Player> player = new ArrayList<>();
     private ArrayList<Square> square = new ArrayList<>();
     
@@ -40,7 +35,7 @@ public class Board {
     
     //FACTORY PATTERN 
     private ConcreteSquareFactory factory = new ConcreteSquareFactory();
-    private static Dice dice = new Dice();
+    private static ConcreteDice dice = new ConcreteDice();
     private int cycle = 0;
     private int inJail;
 
@@ -61,78 +56,80 @@ public class Board {
         System.out.println(ANSI_RED + "\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n" + ANSI_RESET);
     }
 
-    public void playGame() {
+public void playGame() {
+    
+    System.out.println(ANSI_RED + "------------------------------------------------\n\t\t\t\tWELCOME!\n------------------------------------------------\n" + ANSI_RESET);
 
-        System.out.println(ANSI_RED + "------------------------------------------------\n\t\t\t\tWELCOME!\n------------------------------------------------\n" + ANSI_RESET);
+    int pls = random.nextInt(player.size());
+    while (player.size() > 1) { // Spins until the last player remains in the game
+        
+        for (int pl = pls; pl < player.size(); pl++) { // Returns for all players respectively
+           
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
 
-        int pls = random.nextInt(player.size());
-        while (player.size() > 1) { // Spins until the last player remains in the game
+            int dice1 = dice.rollDice();
+            int dice2 = dice.rollDice();
 
-            for (int pl = pls; pl < player.size(); pl++) { // Returns for all players respectively
+            // Notify the dice observers about the dice roll
+            dice.notifyObservers(dice1 + dice2);
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
+            if (!player.get(pl).isInJail()) {
+                System.out.println("--> " + player.get(pl).getName() + "'s dice: " + dice1 + " - " + dice2);
+
+                if (player.get(pl).getLocation() == ChanceCardSquare.bagdat) {
+                    new BagdatAvenue().takeProperties(player, pl);
+                } else if (player.get(pl).getLocation() == ChanceCardSquare.beyoglu) {
+                    new BeyogluAvenue().takeProperties(player, pl);
+                } else if (player.get(pl).getLocation() == ChanceCardSquare.istiklal) {
+                    new IstiklalAvenue().takeProperties(player, pl);
+                } else if (player.get(pl).getLocation() == ChanceCardSquare.taksim) {
+                    new TaksimAvenue().takeProperties(player, pl);
                 }
 
-                int dice1 = dice.rollDice();
-                int dice2 = dice.rollDice();
+                player.get(pl).setLocationOfPlayer(dice1 + dice2, login.getNumberOfSquare());
 
+                if (player.get(pl).getLocation() == inJail) {
+                    player.get(pl).setIsInJail(true);
+                    continue;
+                }
+                System.out.println("--> " + player.get(pl).getName()
+                        + " is on the " + square.get(player.get(pl).getLocation()).getName()
+                        + " number " + ((square.get(player.get(pl).getLocation()).getPosition())));
+            }
+
+            if (player.get(pl).isInJail()) {
+                square.get(player.get(pl).getLocation()).doTask(player, pl, login.getNumberOfSquare(), inJail);
                 if (!player.get(pl).isInJail()) {
-
                     System.out.println("--> " + player.get(pl).getName() + "'s dice: " + dice1 + " - " + dice2);
-
-                    if (player.get(pl).getLocation() == ChanceCardSquare.bagdat) {
-                        new BagdatAvenue().takeProperties(player, pl);
-                    } else if (player.get(pl).getLocation() == ChanceCardSquare.beyoglu) {
-                        new BeyogluAvenue().takeProperties(player, pl);
-                    } else if (player.get(pl).getLocation() == ChanceCardSquare.istiklal) {
-                        new IstiklalAvenue().takeProperties(player, pl);
-                    } else if (player.get(pl).getLocation() == ChanceCardSquare.taksim) {
-                        new TaksimAvenue().takeProperties(player, pl);
-                    }
-
                     player.get(pl).setLocationOfPlayer(dice1 + dice2, login.getNumberOfSquare());
-
-                    if (player.get(pl).getLocation() == inJail) {
-                        player.get(pl).setIsInJail(true);
-                        continue;
-                    }
                     System.out.println("--> " + player.get(pl).getName()
                             + " is on the " + square.get(player.get(pl).getLocation()).getName()
                             + " number " + ((square.get(player.get(pl).getLocation()).getPosition())));
+                } else {
+                    System.out.println("--> " + player.get(pl).getName() + "'s money: " + player.get(pl).getMoney() + "\n");
+                    cycle++;
+                    continue;
                 }
-
-                if (player.get(pl).isInJail()) {
-                    square.get(player.get(pl).getLocation()).doTask(player, pl, login.getNumberOfSquare(), inJail);
-                    if (!player.get(pl).isInJail()) {
-                        System.out.println("--> " + player.get(pl).getName() + "'s dice: " + dice1 + " - " + dice2);
-                        player.get(pl).setLocationOfPlayer(dice1 + dice2, login.getNumberOfSquare());
-                        System.out.println("--> " + player.get(pl).getName()
-                                + " is on the " + square.get(player.get(pl).getLocation()).getName()
-                                + " number " + ((square.get(player.get(pl).getLocation()).getPosition())));
-                    } else {
-                        System.out.println("--> " + player.get(pl).getName() + "'s money: " + player.get(pl).getMoney() + "\n");
-                        cycle++;
-                        continue;
-                    }
-                }
-
-                square.get(player.get(pl).getLocation()).doTask(player, pl, login.getNumberOfSquare(), inJail);
-
-                System.out.println("--> " + player.get(pl).getName() + "'s money: " + player.get(pl).getMoney() + "\n");
-
-                if (player.get(pl).getMoney() <= 0) {
-                    System.out.println(ANSI_RED + "\n***************************\n" +
-                            "* " + player.get(pl).getName() + " is dead!" + "\n***************************\n" + ANSI_RESET);
-                    player.remove(player.get(pl));
-                }
-                cycle++;
-                pls = 0;
             }
 
+            square.get(player.get(pl).getLocation()).doTask(player, pl, login.getNumberOfSquare(), inJail);
+
+            System.out.println("--> " + player.get(pl).getName() + "'s money: " + player.get(pl).getMoney() + "\n");
+
+            if (player.get(pl).getMoney() <= 0) {
+                System.out.println(ANSI_RED + "\n***************************\n" +
+                        "* " + player.get(pl).getName() + " is dead!" + "\n***************************\n" + ANSI_RESET);
+                player.remove(player.get(pl));
+            }
+            cycle++;
+            pls = 0;
         }
+   
     }
+}
 
     public void creatingSquares() {
 
