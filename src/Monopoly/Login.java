@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class Login {
+public class Settings {
 
     private int numberOfSquare;
     private int numberOfIncomeTax;
@@ -219,4 +219,3 @@ public class Login {
     }
 
 }
-
